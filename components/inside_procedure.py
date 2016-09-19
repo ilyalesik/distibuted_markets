@@ -29,13 +29,30 @@ def find_min_g(model, q_model):
     return subgradient_G, min_G
 
 
+def get_p(i, q_model, node):
+    return (q_model.get_sum(i) + node['D']) / (0.5 / node['A'] + node['G'])
+
+def get_gradient_w(model, q_model):
+    return {k: get_p(k[1], q_model, model.nodes[k[1]]) - get_p(k[0], q_model, model.nodes[k[0]]) for k, v in model.edges.items()}
+
+def get_S(model, q_model):
+    min_G = find_min_g(model, q_model)
+    if min_G[1] >= 0:
+        return get_gradient_w(model, q_model)
+    return min_G[0]
+
 
 def start_internal_procedure(model, Q_max, eps):
+    c = find_c(Q_max)
     q = {k: 0.0 for k, v in model.edges}
-    q_model = QModel(q)
-    counter = 0
+    counter = 1
     q_prev = None
 
     while not check_eps(q, q_prev, eps):
         q_prev = q
+        q_model = QModel(q)
+        s = get_S(model, q_model)
+        omega = get_current_omega(counter, c)
+        q = {k: v + omega * s[k] for k, v in q_prev.items()}
+        counter += 1
         # todo eval new q
