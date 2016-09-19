@@ -55,4 +55,5 @@ def start_internal_procedure(model, Q_max, eps):
         omega = get_current_omega(counter, c)
         q = {k: v + omega * s[k] for k, v in q_prev.items()}
         counter += 1
-        # todo eval new q
+
+    return q
