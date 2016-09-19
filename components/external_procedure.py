@@ -1,13 +1,5 @@
 import random
-
-
-def check_eps(q, q_prev, eps):
-    if q_prev is None:
-        return False
-    for key in q.keys():
-        if abs(q[key] - q_prev[key]) > eps:
-            return False
-    return True
+from common import check_eps
 
 
 def calc_delta_w_gradient(model, q):
