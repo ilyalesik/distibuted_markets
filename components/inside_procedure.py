@@ -19,12 +19,12 @@ def find_min_g(model, q_model):
     subgradient_G = None
     for k_node, v_node in model.nodes.items():
         g1 = q_model.get_sum(k_node) + v_node['D']
-        g2 = 0.5 * v_node['D'] / v_node['G'] * v_node['A'] - q_model.get_sum(k_node)
+        g2 = 0.5 * v_node['D'] / v_node['G'] / v_node['A'] - q_model.get_sum(k_node)
         if g1 < g2 and ((min_G is None) or g1 < min_G):
             min_G = g1
             subgradient_G = q_model.get_subgradient(k_node)
         elif g2 < g1 and ((min_G is None) or g2 < min_G):
-            min_G = g1
+            min_G = g2
             subgradient_G = q_model.get_subgradient(k_node)
     return subgradient_G, min_G
 
@@ -44,7 +44,7 @@ def get_S(model, q_model):
 
 def start_internal_procedure(model, Q_max, eps):
     c = find_c(Q_max)
-    q = {k: 0.0 for k, v in model.edges}
+    q = {k: 0.0 for k, v in model.edges.items()}
     counter = 1
     q_prev = None
 
@@ -53,7 +53,8 @@ def start_internal_procedure(model, Q_max, eps):
         q_model = QModel(q)
         s = get_S(model, q_model)
         omega = get_current_omega(counter, c)
-        q = {k: v + omega * s[k] for k, v in q_prev.items()}
+        q = projector({k: v + omega * s[k] for k, v in q_prev.items()}, Q_max)
         counter += 1
 
+    print counter
     return q
