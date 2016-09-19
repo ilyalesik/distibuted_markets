@@ -3,7 +3,7 @@ import unittest
 from components.inside_procedure import find_c, projector
 
 
-class TestCommon(unittest.TestCase):
+class TestInsideProcedureCommon(unittest.TestCase):
 
     def test__find_c(self):
         Q = {(1, 2): 1, (2, 3): 2, (3, 4): 3}
