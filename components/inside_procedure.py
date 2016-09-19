@@ -56,5 +56,4 @@ def start_internal_procedure(model, Q_max, eps):
         q = projector({k: v + omega * s[k] for k, v in q_prev.items()}, Q_max)
         counter += 1
 
-    print counter
     return q
