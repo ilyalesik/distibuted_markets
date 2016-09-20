@@ -24,6 +24,7 @@ model.add_node(3, 0.5, 0.0, lambda t: 6 if 0 <= t < 8 or 20 <= t <= 24 else 30,
 model.add_edge(2, 3, 0.01 * 2, 0.01, 0.01 * 1.5)
 model.add_edge(1, 3, 0.01, 0.01 * 2, 0.01 * 2.5)
 
-q = start_external_procedure(model, 0.00001, 0.1)
+projector = lambda q: {k: min(abs(v), 1.714) for k, v in q.items()}
+q = start_external_procedure(model, 0.0000001, 0.1, projector)
 print '----------------------'
 print q
