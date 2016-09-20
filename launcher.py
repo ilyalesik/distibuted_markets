@@ -1,5 +1,5 @@
-from model import DataModel
-from inside_procedure import start_internal_procedure
+from components.models.DataModel import DataModel
+from components.inside_procedure import start_internal_procedure
 
 model = DataModel()
 model.add_node(1, 1.03, 0.0, 10.0, 1.0)

@@ -1,7 +1,7 @@
 import unittest
 
 from components.inside_procedure import find_c, projector, start_internal_procedure
-from components.model import DataModel
+from components.models.DataModel import DataModel
 
 
 class TestInsideProcedureCommon(unittest.TestCase):
