@@ -37,3 +37,7 @@ def check_eps(q, q_prev, eps):
         if not isclose(q[key], q_prev[key], abs_tol=eps):
             return False
     return True
+
+
+def get_current_omega(k, c):
+    return c * k ** (-0.75)

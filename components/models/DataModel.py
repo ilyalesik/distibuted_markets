@@ -16,6 +16,7 @@ class DataModel:
         self.edges[key] = {'a': a, 'b': b, 'c': c}
 
     def get_data_model_with_fix_t(self, t):
-        new_model = DataModel
+        new_model = DataModel()
         new_model.nodes = {k: {'A': v['A'], 'B': v['B'], 'D': v['D'](t), 'G': v['G'](t)} for k, v in self.nodes.items()}
+        new_model.edges = self.edges
         return new_model

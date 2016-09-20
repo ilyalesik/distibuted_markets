@@ -1,4 +1,5 @@
 from common import check_eps
+from components.common import get_current_omega
 from models.QModel import QModel
 
 
@@ -8,10 +9,6 @@ def find_c(Q):
 
 def projector(q, Q_max):
     return {k: (-1 if v < 0 else 1) * min(abs(v), abs(Q_max[k])) if k in Q_max else v for k, v in q.items()}
-
-
-def get_current_omega(k, c):
-    return c * k ** (-0.75)
 
 
 def find_min_g(model, q_model):
