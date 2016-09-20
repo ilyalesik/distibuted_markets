@@ -1,6 +1,6 @@
 import unittest
 
-from components.inside_procedure import find_c, projector, start_internal_procedure
+from components.inside_procedure import find_c, projector, start_internal_procedure, calc_p
 from components.models.DataModel import DataModel
 
 
@@ -24,6 +24,20 @@ class TestInsideProcedureCommon(unittest.TestCase):
         q = {(1, 2): 1, (2, 3): 2}
         Q_max = {(1, 2): 0.5}
         self.assertEqual(projector(q, Q_max), {(1, 2): 0.5, (2, 3): 2})
+
+    def test_calc_p(self):
+        model = DataModel()
+        model.add_node(1, 1.0, 0.0, 10.0, 1.0)
+        model.add_node(2, 0.5, 0.0, 20.0, 2.0)
+        model.add_node(3, 0.5, 0.0, 30.0, 3.0)
+
+        model.add_edge(2, 1, 0.01 * 2, 0.01 * 2, 0.01 * 2)
+        model.add_edge(2, 3, 0.01 * 2, 0.01, 0.01 * 1.5)
+        model.add_edge(1, 3, 0.01, 0.01 * 2, 0.01 * 2.5)
+        q = {(2, 1): 4, (2, 3): 5, (1, 3): 6}
+        self.assertEqual(calc_p(model, q), {1: 8.0, 2: 9.666666666666666, 3: 4.75})
+
+
 
 class TestInsideProcedure(unittest.TestCase):
 

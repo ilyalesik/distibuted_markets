@@ -57,3 +57,7 @@ def start_internal_procedure(model, Q_max, eps):
         counter += 1
 
     return q
+
+def calc_p(model, q):
+    q_model = QModel(q)
+    return {k: get_p(k, q_model, v) for k, v in model.nodes.items()}

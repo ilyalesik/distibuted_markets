@@ -6,9 +6,12 @@ def calc_delta_w_gradient(model, q):
     t = random.uniform(0, 24)
     #todo call inside procedure
 
+def get_gradient_w(model, q, eps):
+    return {k: get_p(k[1]) - get_p(k[0]) for k, v in model.edges.items()}
+
 
 def start_external_procedure(model, eps):
-    q = {k: 0.0 for k, v in model.edges}
+    q = {k: 0.0 for k, v in model.edges.items()}
     counter = 0
     q_prev = None
 
