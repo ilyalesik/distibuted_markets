@@ -18,8 +18,8 @@ def find_min_g(model, q_model):
     min_G = None
     subgradient_G = None
     for k_node, v_node in model.nodes.items():
-        g1 = q_model.get_sum(k_node) + v_node['D']
-        g2 = 0.5 * v_node['D'] / v_node['G'] / v_node['A'] - q_model.get_sum(k_node)
+        g1 = q_model.get_sum(k_node) - v_node['G'] * v_node['B'] + v_node['D']
+        g2 = 0.5 * (v_node['D'] / v_node['G'] - v_node['B']) / v_node['A'] - q_model.get_sum(k_node)
         if g1 < g2 and ((min_G is None) or g1 < min_G):
             min_G = g1
             subgradient_G = q_model.get_subgradient(k_node)
@@ -30,7 +30,7 @@ def find_min_g(model, q_model):
 
 
 def get_p(i, q_model, node):
-    return (q_model.get_sum(i) + node['D']) / (0.5 / node['A'] + node['G'])
+    return (q_model.get_sum(i) + 0.5 * node['B'] / node['A'] + node['D']) / (0.5 / node['A'] + node['G'])
 
 def get_gradient_w(model, q_model):
     return {k: get_p(k[1], q_model, model.nodes[k[1]]) - get_p(k[0], q_model, model.nodes[k[0]]) for k, v in model.edges.items()}
