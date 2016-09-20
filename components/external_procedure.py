@@ -1,13 +1,14 @@
 import random
 from common import check_eps
+from inside_procedure import start_internal_procedure, calc_p
 
 
-def calc_delta_w_gradient(model, q):
+def calc_delta_tw_stochastic_gradient(model, Q, eps):
     t = random.uniform(0, 24)
-    #todo call inside procedure
-
-def get_gradient_w(model, q, eps):
-    return {k: get_p(k[1]) - get_p(k[0]) for k, v in model.edges.items()}
+    model_fix_t = model.get_data_model_with_fix_t(t)
+    q = start_internal_procedure(model_fix_t, Q, eps)
+    p = calc_p(model, q)
+    return {k: 24 * (p[k[1]] - p[k[0]]) - (2 * v['a'] * Q[k] + v['b']) for k, v in model.edges.items()}
 
 
 def start_external_procedure(model, eps):
@@ -17,5 +18,5 @@ def start_external_procedure(model, eps):
 
     while not check_eps(q, q_prev, eps):
         q_prev = q
-        delta_w = calc_delta_w_gradient(model, q)
+        delta_w = calc_delta_tw_stochastic_gradient(model, q, eps)
         #todo eval new q
