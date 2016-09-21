@@ -25,6 +25,6 @@ model.add_edge(2, 3, 0.01 * 2, 0.01, 0.01 * 1.5)
 model.add_edge(1, 3, 0.01, 0.01 * 2, 0.01 * 2.5)
 
 projector = lambda q: {k: min(abs(v), 1.714) for k, v in q.items()}
-q = start_external_procedure(model, 0.0000001, 0.1, projector)
+q = start_external_procedure(model, 0.000001, 0.1, projector)
 print '----------------------'
 print q

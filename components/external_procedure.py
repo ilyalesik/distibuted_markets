@@ -15,7 +15,6 @@ def calc_delta_tw_stochastic_gradient(model, Q, eps):
 def start_external_procedure(model, eps, c, projector=lambda x: x):
     q = {k: 0.0 for k, v in model.edges.items()}
     counter = 1
-    _gamma = 0 #todo
     q_prev = None
 
     while not check_eps(q, q_prev, eps):
