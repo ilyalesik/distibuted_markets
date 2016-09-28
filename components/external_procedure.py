@@ -33,6 +33,6 @@ def start_external_procedure(model, eps, c, projector=lambda x: x):
         omega = get_current_omega(counter, c)
         q = projector({k: v + omega * delta_tw[k] for k, v in q_prev.items()})
         counter += 1
-        print q, ' :: ', delta_tw_dict['tw']
+        print q, ' :: ', delta_tw_dict['tw'], ' :: ', delta_tw_dict['t']
 
     return q
