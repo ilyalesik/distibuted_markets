@@ -35,4 +35,5 @@ def start_external_procedure(model, eps, c, projector=lambda x: x):
         counter += 1
         print q, ' :: ', delta_tw_dict['tw'], ' :: ', delta_tw_dict['t']
 
+    print 'counter: ', counter
     return q
