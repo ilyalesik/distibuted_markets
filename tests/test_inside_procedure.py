@@ -1,7 +1,7 @@
 import unittest
 
 from components.inside_procedure import find_c, projector, start_internal_procedure, calc_p
-from components.models.DataModel import DataModel
+from components.models.InputModel import InputModel
 
 
 class TestInsideProcedureCommon(unittest.TestCase):
@@ -26,7 +26,7 @@ class TestInsideProcedureCommon(unittest.TestCase):
         self.assertEqual(projector(q, Q_max), {(1, 2): 0.5, (2, 3): 2})
 
     def test_calc_p(self):
-        model = DataModel()
+        model = InputModel()
         model.add_node(1, 1.0, 0.0, 10.0, 1.0)
         model.add_node(2, 0.5, 0.0, 20.0, 2.0)
         model.add_node(3, 0.5, 0.0, 30.0, 3.0)
@@ -42,7 +42,7 @@ class TestInsideProcedureCommon(unittest.TestCase):
 class TestInsideProcedure(unittest.TestCase):
 
     def test_check_sample(self):
-        model = DataModel()
+        model = InputModel()
         model.add_node(1, 1.03, 0.0, 10.0, 1.0)
         model.add_node(2, 0.5, 0.0, 20.0, 2.0)
         model.add_node(3, 0.5, 0.0, 30.0, 3.0)

@@ -1,10 +1,10 @@
 import unittest
-from components.models.DataModel import DataModel
+from components.models.InputModel import InputModel
 
 class TestDataModel(unittest.TestCase):
 
     def test_get_data_model_with_fix_t(self):
-        model = DataModel()
+        model = InputModel()
         model.add_node(1, 1.03, 0.0, lambda t: 2 if 0 <= t < 8 or 20 <= t <= 24 else 10,
                        lambda t: 0.2 if 0 <= t < 8 or 20 <= t <= 24 else 1)
         model.add_node(2, 0.5, 0.0, lambda t: 4 if 0 <= t < 6 or 18 <= t <= 24 else 20,
