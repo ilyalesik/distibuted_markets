@@ -5,19 +5,19 @@ from components.external_procedure import start_external_procedure
 from components.models.NodeModel import NodeModel
 
 node1 = NodeModel()\
-    .setA(1.03)\
-    .setD(lambda t: 2 if 0 <= t < 8 or 20 <= t <= 24 else 10)\
-    .setG(lambda t: 0.1 * (2 if 0 <= t < 8 or 20 <= t <= 24 else 10))
+    .set_A(1.03)\
+    .set_D(lambda t: 2 if 0 <= t < 8 or 20 <= t <= 24 else 10)\
+    .set_G(lambda t: 0.1 * (2 if 0 <= t < 8 or 20 <= t <= 24 else 10))
 
 node2 = NodeModel()\
-    .setA(0.5)\
-    .setD(lambda t: 4 if 0 <= t < 6 or 18 <= t <= 24 else 20)\
-    .setG(lambda t: 0.1 * (4 if 0 <= t < 6 or 18 <= t <= 24 else 20))
+    .set_A(0.5)\
+    .set_D(lambda t: 4 if 0 <= t < 6 or 18 <= t <= 24 else 20)\
+    .set_G(lambda t: 0.1 * (4 if 0 <= t < 6 or 18 <= t <= 24 else 20))
 
 node3 = NodeModel()\
-    .setA(0.5)\
-    .setD(lambda t: 6 if 0 <= t < 8 or 20 <= t <= 24 else 30)\
-    .setG(lambda t: 0.1 * (6 if 0 <= t < 8 or 20 <= t <= 24 else 30))
+    .set_A(0.5)\
+    .set_D(lambda t: 6 if 0 <= t < 8 or 20 <= t <= 24 else 30)\
+    .set_G(lambda t: 0.1 * (6 if 0 <= t < 8 or 20 <= t <= 24 else 30))
 
 edge23 = EdgeModel().set_a(0.01 * 2).set_b(0.01).set_c(0.01 * 1.5)
 edge13 = EdgeModel().set_a(0.01).set_b(0.01 * 2).set_c(0.01 * 2.5)

@@ -6,7 +6,7 @@ from inside_procedure import start_internal_procedure, calc_p
 
 def calc_delta_tw_stochastic_gradient(model, Q, eps):
     t = random.uniform(0, 24)
-    model_fix_t = model.get_data_model_with_fix_t(t)
+    model_fix_t = model.get_input_model_with_fix_t(t)
     q = start_internal_procedure(model_fix_t, Q, eps)
     p = calc_p(model_fix_t, q)
     pr = reduce(lambda x, (k, v): x + 0.25 * p[k] ** 2 / v.A, model_fix_t.nodes.items(), 0)

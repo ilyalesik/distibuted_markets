@@ -29,19 +29,19 @@ class TestInsideProcedureCommon(unittest.TestCase):
 
     def test_calc_p(self):
         node1 = NodeModel() \
-            .setA(1.0) \
-            .setD(10.0) \
-            .setG(1.0)
+            .set_A(1.0) \
+            .set_D(10.0) \
+            .set_G(1.0)
 
         node2 = NodeModel() \
-            .setA(0.5) \
-            .setD(20.0) \
-            .setG(2.0)
+            .set_A(0.5) \
+            .set_D(20.0) \
+            .set_G(2.0)
 
         node3 = NodeModel() \
-            .setA(0.5) \
-            .setD(30.0) \
-            .setG(3.0)
+            .set_A(0.5) \
+            .set_D(30.0) \
+            .set_G(3.0)
 
         edge21 = EdgeModel().set_a(0.01 * 2).set_b(0.01 * 2).set_c(0.01 * 2)
         edge23 = EdgeModel().set_a(0.01 * 2).set_b(0.01).set_c(0.01 * 1.5)
@@ -65,19 +65,19 @@ class TestInsideProcedure(unittest.TestCase):
 
     def test_check_sample(self):
         node1 = NodeModel() \
-            .setA(1.03) \
-            .setD(10.0) \
-            .setG(1.0)
+            .set_A(1.03) \
+            .set_D(10.0) \
+            .set_G(1.0)
 
         node2 = NodeModel() \
-            .setA(0.5) \
-            .setD(20.0) \
-            .setG(2.0)
+            .set_A(0.5) \
+            .set_D(20.0) \
+            .set_G(2.0)
 
         node3 = NodeModel() \
-            .setA(0.5) \
-            .setD(30.0) \
-            .setG(3.0)
+            .set_A(0.5) \
+            .set_D(30.0) \
+            .set_G(3.0)
 
         edge21 = EdgeModel().set_a(0.01 * 2).set_b(0.01 * 2).set_c(0.01 * 2)
         edge23 = EdgeModel().set_a(0.01 * 2).set_b(0.01).set_c(0.01 * 1.5)

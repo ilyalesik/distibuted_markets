@@ -9,18 +9,18 @@ class NodeModel:
     def __init__(self):
         pass
 
-    def setA(self, A):
+    def set_A(self, A):
         self.A = A
         return self
 
-    def setB(self, B):
+    def set_B(self, B):
         self.B = B
         return self
 
-    def setD(self, D):
+    def set_D(self, D):
         self.D = D
         return self
 
-    def setG(self, G):
+    def set_G(self, G):
         self.G = G
         return self
