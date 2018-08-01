@@ -21,6 +21,6 @@ class InputModel:
 
     def get_input_model_with_fix_t(self, t):
         new_model = InputModel()
-        new_model.nodes = {k: NodeModel().set_A(v.A).set_B(v.B).set_D(v.D(t)).set_G(v.G(t)) for k, v in self.nodes.items()}
+        new_model.nodes = {k: v.get_model_with_fix_t(t) for k, v in self.nodes.items()}
         new_model.edges = self.edges
         return new_model
