@@ -14,15 +14,15 @@ def projector(q, Q_max):
 def find_min_g(model, q_model):
     min_G = None
     subgradient_G = None
-    for k_node, v_node in model.nodes.items():
-        g1 = q_model.get_sum(k_node) - v_node.G * v_node.B + v_node.D
-        g2 = 0.5 * (v_node.D / v_node.G - v_node.B) / v_node.A - q_model.get_sum(k_node)
+    for node_key, node in model.nodes.items():
+        g1 = q_model.get_sum(node_key) - node.G * node.B + node.D
+        g2 = 0.5 * (node.D / node.G - node.B) / node.A - q_model.get_sum(node_key)
         if g1 < g2 and ((min_G is None) or g1 < min_G):
             min_G = g1
-            subgradient_G = q_model.get_subgradient(k_node)
+            subgradient_G = q_model.get_subgradient(node_key)
         elif g2 < g1 and ((min_G is None) or g2 < min_G):
             min_G = g2
-            subgradient_G = q_model.get_subgradient(k_node)
+            subgradient_G = q_model.get_subgradient(node_key)
     return subgradient_G, min_G
 
 
