@@ -1,7 +1,7 @@
 from components.models.EdgeModel import EdgeModel
 from components.models.InputModel import InputModel
 from components.inside_procedure import start_internal_procedure
-from components.external_procedure import start_external_procedure
+from components.periodical_demand_external_procedure import start_external_procedure
 from components.models.NodeModel import NodeModel
 
 node1 = NodeModel()\
