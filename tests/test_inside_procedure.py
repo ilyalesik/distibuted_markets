@@ -1,7 +1,9 @@
 import unittest
 
 from components.inside_procedure import find_c, projector, start_internal_procedure, calc_p
+from components.models.EdgeModel import EdgeModel
 from components.models.InputModel import InputModel
+from components.models.NodeModel import NodeModel
 
 
 class TestInsideProcedureCommon(unittest.TestCase):
@@ -26,30 +28,69 @@ class TestInsideProcedureCommon(unittest.TestCase):
         self.assertEqual(projector(q, Q_max), {(1, 2): 0.5, (2, 3): 2})
 
     def test_calc_p(self):
-        model = InputModel()
-        model.add_node(1, 1.0, 0.0, 10.0, 1.0)
-        model.add_node(2, 0.5, 0.0, 20.0, 2.0)
-        model.add_node(3, 0.5, 0.0, 30.0, 3.0)
+        node1 = NodeModel() \
+            .setA(1.0) \
+            .setD(10.0) \
+            .setG(1.0)
 
-        model.add_edge(2, 1, 0.01 * 2, 0.01 * 2, 0.01 * 2)
-        model.add_edge(2, 3, 0.01 * 2, 0.01, 0.01 * 1.5)
-        model.add_edge(1, 3, 0.01, 0.01 * 2, 0.01 * 2.5)
+        node2 = NodeModel() \
+            .setA(0.5) \
+            .setD(20.0) \
+            .setG(2.0)
+
+        node3 = NodeModel() \
+            .setA(0.5) \
+            .setD(30.0) \
+            .setG(3.0)
+
+        edge21 = EdgeModel().set_a(0.01 * 2).set_b(0.01 * 2).set_c(0.01 * 2)
+        edge23 = EdgeModel().set_a(0.01 * 2).set_b(0.01).set_c(0.01 * 1.5)
+        edge13 = EdgeModel().set_a(0.01).set_b(0.01 * 2).set_c(0.01 * 2.5)
+
+        model = InputModel()
+        model \
+            .add_node(1, node1) \
+            .add_node(2, node2) \
+            .add_node(3, node3) \
+            .add_edge(2, 1, edge21) \
+            .add_edge(2, 3, edge23) \
+            .add_edge(1, 3, edge13)
+
         q = {(2, 1): 4, (2, 3): 5, (1, 3): 6}
-        self.assertEqual(calc_p(model, q), {1: 8.0, 2: 9.666666666666666, 3: 4.75})
+        self.assertEqual({1: 8.0, 2: 9.666666666666666, 3: 4.75}, calc_p(model, q))
 
 
 
 class TestInsideProcedure(unittest.TestCase):
 
     def test_check_sample(self):
-        model = InputModel()
-        model.add_node(1, 1.03, 0.0, 10.0, 1.0)
-        model.add_node(2, 0.5, 0.0, 20.0, 2.0)
-        model.add_node(3, 0.5, 0.0, 30.0, 3.0)
+        node1 = NodeModel() \
+            .setA(1.03) \
+            .setD(10.0) \
+            .setG(1.0)
 
-        model.add_edge(2, 1, 0.01 * 2, 0.01 * 2, 0.01 * 2)
-        model.add_edge(2, 3, 0.01 * 2, 0.01, 0.01 * 1.5)
-        model.add_edge(1, 3, 0.01, 0.01 * 2, 0.01 * 2.5)
+        node2 = NodeModel() \
+            .setA(0.5) \
+            .setD(20.0) \
+            .setG(2.0)
+
+        node3 = NodeModel() \
+            .setA(0.5) \
+            .setD(30.0) \
+            .setG(3.0)
+
+        edge21 = EdgeModel().set_a(0.01 * 2).set_b(0.01 * 2).set_c(0.01 * 2)
+        edge23 = EdgeModel().set_a(0.01 * 2).set_b(0.01).set_c(0.01 * 1.5)
+        edge13 = EdgeModel().set_a(0.01).set_b(0.01 * 2).set_c(0.01 * 2.5)
+
+        model = InputModel()
+        model \
+            .add_node(1, node1) \
+            .add_node(2, node2) \
+            .add_node(3, node3) \
+            .add_edge(2, 1, edge21)\
+            .add_edge(2, 3, edge23) \
+            .add_edge(1, 3, edge13)
 
         q = start_internal_procedure(model, {(2, 1): 0.6, (2, 3): 0.7273, (1, 3): 0.9546}, 0.0000001)
-        self.assertEqual(q, {(1, 3): 0.9546, (2, 3): 0.7273, (2, 1): 0.4625408183122532})
+        self.assertEqual({(1, 3): 0.9546, (2, 3): 0.7273, (2, 1): 0.4625408183122532}, q)
