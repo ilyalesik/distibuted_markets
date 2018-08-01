@@ -4,6 +4,7 @@ from components.models.NodeModel import NodeModel
 class InputModel:
     nodes = {}
     edges = {}
+    indicators = {}
 
     def __init__(self):
         pass
@@ -17,6 +18,13 @@ class InputModel:
             return self
         key = (number_1, number_2)
         self.edges[key] = edge
+        return self
+
+    def add_indicators(self, number_1, number_2, indicators):
+        if number_1 == number_2:
+            return self
+        key = (number_1, number_2)
+        self.indicators[key] = indicators
         return self
 
     def get_input_model_with_fix_t(self, t):
