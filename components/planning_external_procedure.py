@@ -21,6 +21,26 @@ def calc_gradient(model, T, Q, eps):
         k: list((w_gradient_by_t[t][k] for t in range(0, T +1))) for k, v in model.edges.items()
     }
 
+
+def find_min_g(model, T, Q):
+    min_G = None
+    subgradient_G = None
+    for edge_key, edge in model.edges.items():
+        for t in range(0, T):
+            g = Q[edge_key][t + 1] - Q[edge_key][t]
+            if (min_G is None) or g < min_G:
+                min_G = g
+                subgradient_G = {k: list((-1 if k == edge_key and t == _t + 1 else 1 if k == edge_key and t == _t else 0 for _t in range(0, T + 1))) for k, v in model.edges.items()}
+    return subgradient_G, min_G
+
+
+def get_S(model, T, Q, eps):
+    min_G = find_min_g(model, T, Q)
+    if min_G[1] >= 0:
+        return calc_gradient(model, T, Q, eps)
+    return min_G[0]
+
+
 def check_eps_for_T(q, q_prev, eps, T):
     if q_prev is None:
         return False
@@ -37,7 +57,7 @@ def start_external_procedure(model, T, eps, c, projector=lambda x: x):
 
     while not check_eps_for_T(q, q_prev, eps, T):
         q_prev = q
-        delta_tw = calc_gradient(model, T, q, eps)
+        delta_tw = get_S(model, T, q, eps)
         omega = get_current_omega(counter, c)
         q = {k: list((v[t] + omega * delta_tw[k][t] for t in range(0, T + 1))) for k, v in q_prev.items()}
         counter += 1
