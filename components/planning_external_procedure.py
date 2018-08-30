@@ -22,20 +22,20 @@ def calc_gradient(model, T, Q, eps):
     }
 
 
-def find_min_g(model, T, Q):
+def find_max_g(model, T, Q):
     max_G = None
     subgradient_G = None
     for edge_key, edge in model.edges.items():
         for t in range(0, T):
-            g = Q[edge_key][t] - Q[edge_key][t + 1]
+            g = abs(Q[edge_key][t]) - abs(Q[edge_key][t + 1])
             if (max_G is None) or g > max_G:
                 max_G = g
-                subgradient_G = {k: list((-1 if k == edge_key and t >= _t + 1 else 1 if k == edge_key and t <= _t else 0 for _t in range(0, T + 1))) for k, v in model.edges.items()}
+                subgradient_G = {k: list(((-1 if Q[edge_key][t + 1] > 0 else 1) if k == edge_key and t >= _t + 1 else (1 if Q[edge_key][t] > 0 else -1) if k == edge_key and t <= _t else 0 for _t in range(0, T + 1))) for k, v in model.edges.items()}
     return subgradient_G, max_G
 
 
 def get_S(model, T, Q, eps):
-    max_G = find_min_g(model, T, Q)
+    max_G = find_max_g(model, T, Q)
     if max_G[1] <= 0:
         return calc_gradient(model, T, Q, eps)
     return max_G[0]
