@@ -26,10 +26,9 @@ model\
 
 T = 10
 
-projector1 = lambda v: 0
+projector1 = lambda v: v
 projector2 = lambda v: min(abs(v), max(abs(v), 0.67), 1.4)
-projector3 = lambda v: min(abs(v), max(abs(v), 0.67), 1.4)
-projector_items = (projector1, projector1, projector1, projector1, projector1, projector1, projector2, projector2, projector3, projector3, projector3)
+projector_items = (projector1, projector1, projector1, projector1, projector1, projector1, projector2, projector1, projector1, projector1, projector1)
 projector = lambda q: {k: list(projector_items[t](v[t]) for t in range(0, T + 1)) for k, v in q.items()}
 q = start_external_procedure(model, T, 0.00005, 0.1, projector)
 print '----------------------'
