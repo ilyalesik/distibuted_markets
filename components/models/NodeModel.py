@@ -1,12 +1,12 @@
 
 
 class NodeModel:
-    A = 0.0
-    B = 0.0
-    D = lambda t: 0.0
-    G = lambda t: 0.0
 
     def __init__(self):
+        self.A = 1.0
+        self.B = 0.0
+        self.D = lambda t: 0.0
+        self.G = lambda t: 1.0
         pass
 
     def set_A(self, A):

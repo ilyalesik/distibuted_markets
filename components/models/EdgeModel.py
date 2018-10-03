@@ -1,10 +1,10 @@
 
 class EdgeModel:
-    a = 0.0
-    b = 0.0
-    c = 0.0
 
     def __init__(self):
+        self.a = 0.0
+        self.b = 0.0
+        self.c = 0.0
         pass
 
     def set_a(self, a):

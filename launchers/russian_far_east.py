@@ -87,3 +87,53 @@ node12_vrp = [
 node12 = NodeModel()\
     .set_D(lambda t: -4230.52 + 45.44 * node12_vrp[t])\
     .set_G(lambda t: 181.91)
+
+# missing: node 6 = 9, 8 = 1
+
+edge2_1 = EdgeModel().set_c(660000)
+edge3_1 = EdgeModel().set_c(605000)
+edge4_5 = EdgeModel().set_c(225500)
+edge5_3 = EdgeModel().set_c(825550)
+edge7_9 = EdgeModel().set_c(55000)
+edge1_9 = EdgeModel().set_c(1760000)
+edge11_10 = EdgeModel().set_c(853050)
+edge9_11 = EdgeModel().set_c(1766600)
+edge11_12 = EdgeModel().set_c(414700)
+
+indicators = IndicatorModel((1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0))
+
+model = InputModel()
+model\
+    .add_node(1, node1)\
+    .add_node(2, node2)\
+    .add_node(3, node3)\
+    .add_node(4, node4)\
+    .add_node(5, node5)\
+    .add_node(7, node7)\
+    .add_node(9, node9)\
+    .add_node(10, node10)\
+    .add_node(11, node11)\
+    .add_node(12, node12)\
+    .add_edge(2, 1, edge2_1)\
+    .add_edge(3, 1, edge3_1)\
+    .add_edge(4, 5, edge4_5)\
+    .add_edge(5, 3, edge5_3)\
+    .add_edge(7, 9, edge7_9)\
+    .add_edge(1, 9, edge1_9)\
+    .add_edge(11, 10, edge11_10)\
+    .add_edge(9, 11, edge9_11)\
+    .add_edge(11, 12, edge11_12)\
+    .add_indicators(2, 1, indicators)\
+    .add_indicators(3, 1, indicators)\
+    .add_indicators(4, 5, indicators)\
+    .add_indicators(5, 3, indicators)\
+    .add_indicators(7, 9, indicators)\
+    .add_indicators(1, 9, indicators)\
+    .add_indicators(11, 10, indicators)\
+    .add_indicators(9, 11, indicators)\
+    .add_indicators(11, 12, indicators)
+
+T = 11
+q = start_external_procedure(model, T, 0.0001, 0.1)
+print '----------------------'
+print q
