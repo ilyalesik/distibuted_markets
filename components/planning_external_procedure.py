@@ -13,7 +13,7 @@ def calc_W_gradient(model, t, dQ, eps):
     Q_slice_t = get_q_slice(model, t, dQ)
     q = start_internal_procedure(model_fix_t, Q_slice_t, eps)
     p = calc_p(model_fix_t, q)
-    return {k: (abs(p[k[1]] - p[k[0]]) - (2 * v.a * Q_slice_t[k] + v.b))for k, v in model.edges.items()}
+    return {k: (abs(p[k[1]] - p[k[0]]) - (2 * v.a * Q_slice_t[k] + v.b + v.e_tr))for k, v in model.edges.items()}
 
 def calc_gradient(model, T, dQ, eps):
     w_gradient_by_t = list((calc_W_gradient(model, t, dQ, eps) for t in range(0, T +1)))

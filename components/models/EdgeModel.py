@@ -5,6 +5,7 @@ class EdgeModel:
         self.a = 0.0
         self.b = 0.0
         self.c = 0.0
+        self.e_tr = 0.0
         pass
 
     def set_a(self, a):
@@ -17,4 +18,8 @@ class EdgeModel:
 
     def set_c(self, c):
         self.c = c
+        return self
+
+    def set_e_tr(self, e_tr):
+        self.e_tr = e_tr
         return self

@@ -90,15 +90,15 @@ node12 = NodeModel()\
 
 # missing: node 6 = 9, 8 = 1
 
-edge2_1 = EdgeModel().set_c(660000)
-edge3_1 = EdgeModel().set_c(605000)
-edge4_5 = EdgeModel().set_c(225500)
-edge5_3 = EdgeModel().set_c(825550)
-edge7_9 = EdgeModel().set_c(55000)
-edge1_9 = EdgeModel().set_c(1760000)
-edge11_10 = EdgeModel().set_c(853050)
-edge9_11 = EdgeModel().set_c(1766600)
-edge11_12 = EdgeModel().set_c(414700)
+edge2_1 = EdgeModel().set_c(660000).set_e_tr(5.34)
+edge3_1 = EdgeModel().set_c(605000).set_e_tr(4.895)
+edge4_5 = EdgeModel().set_c(225500).set_e_tr(1.8245)
+edge5_3 = EdgeModel().set_c(825550).set_e_tr(6.67945)
+edge7_9 = EdgeModel().set_c(55000).set_e_tr(0.445)
+edge1_9 = EdgeModel().set_c(1760000).set_e_tr(14.24)
+edge11_10 = EdgeModel().set_c(853050).set_e_tr(6.90195)
+edge9_11 = EdgeModel().set_c(1766600).set_e_tr(14.2934)
+edge11_12 = EdgeModel().set_c(414700).set_e_tr(3.3553)
 
 indicators = IndicatorModel((1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0))
 
