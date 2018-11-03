@@ -31,6 +31,16 @@ def check_eps_for_T(q, q_prev, eps, T):
                 return False
     return True
 
+
+def calc_conditions(model, T, dQ, eps):
+    w_gradient_by_t = list((calc_W_gradient(model, t, dQ, eps) for t in range(0, T + 1)))
+    return {
+        k: list(
+            (reduce(lambda x, tau: x + w_gradient_by_t[tau][k], range(t, T), 0) - (v.a * get_q_slice(model, t, dQ)[k] ** 2 + v.b * get_q_slice(model, t, dQ)[k] + v.c) if (model.indicators[k][t] > 0) else 0
+             for t in range(0, T + 1))) for k, v in model.edges.items()
+    }
+
+
 def start_external_procedure(model, T, eps, c, projector=lambda x: x):
     dq = {k: list((0.0 for t in range(0, T + 1))) for k, v in model.edges.items()}
     counter = 1
@@ -45,4 +55,5 @@ def start_external_procedure(model, T, eps, c, projector=lambda x: x):
         print dq
 
     print 'counter: ', counter
+    print 'conditions: ', calc_conditions(model, T, dq, eps)
     return dq
