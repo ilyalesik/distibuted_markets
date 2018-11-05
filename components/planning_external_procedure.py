@@ -5,7 +5,7 @@ from inside_procedure import start_internal_procedure, calc_p
 
 def get_q_slice(model, t, dQ):
     return {
-        k: reduce(lambda x, tau: x + dQ[k][tau], range(0, t), 0) for k, v in model.edges.items()
+        k: reduce(lambda x, tau: x + dQ[k][tau], range(0, t + 1), 0) for k, v in model.edges.items()
     }
 
 def calc_W_gradient(model, t, dQ, eps):
