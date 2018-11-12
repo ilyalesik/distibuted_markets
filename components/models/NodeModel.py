@@ -27,3 +27,6 @@ class NodeModel:
 
     def get_model_with_fix_t(self, t):
         return NodeModel().set_A(self.A).set_B(self.B).set_D(self.D(t)).set_G(self.G(t))
+
+    def __str__(self):
+        return "A: {}, B: {}, D: {}, G: {}".format(self.A, self.B, self.D, self.G)
