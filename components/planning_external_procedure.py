@@ -13,7 +13,7 @@ def calc_W_gradient(model, t, dQ, eps):
     Q_slice_t = get_q_slice(model, t, dQ)
     q = start_internal_procedure(model_fix_t, Q_slice_t, eps)
     p = calc_p(model_fix_t, q)
-    return {k: (abs(p[k[1]] - p[k[0]]) - (2 * v.a * Q_slice_t[k] + v.b + v.e_tr))for k, v in model.edges.items()}
+    return {k: (p[k[1]] - p[k[0]] - (2 * v.a * Q_slice_t[k] + v.b + v.e_tr))for k, v in model.edges.items()}
 
 def calc_gradient(model, T, dQ, eps):
     w_gradient_by_t = list((calc_W_gradient(model, t, dQ, eps) for t in range(0, T +1)))
@@ -36,7 +36,7 @@ def calc_conditions(model, T, dQ, eps):
     w_gradient_by_t = list((calc_W_gradient(model, t, dQ, eps) for t in range(0, T + 1)))
     return {
         k: list(
-            (reduce(lambda x, tau: x + w_gradient_by_t[tau][k], range(t, T), 0) - (v.a * get_q_slice(model, t, dQ)[k] ** 2 + v.b * get_q_slice(model, t, dQ)[k] + v.c) if (model.indicators[k][t] > 0) else 0
+            (reduce(lambda x, tau: x + w_gradient_by_t[tau][k], range(t, T), 0) - (v.a * dQ[k][t] ** 2 + v.b * dQ[k][t]) if (model.indicators[k][t] > 0) else 0
              for t in range(0, T + 1))) for k, v in model.edges.items()
     }
 
@@ -50,7 +50,7 @@ def start_external_procedure(model, T, eps, c, projector=lambda x: x):
         dq_prev = dq
         gradient = calc_gradient(model, T, dq, eps)
         omega = get_current_omega(counter, c)
-        dq = projector({k: list((v[t] + omega * gradient[k][t] for t in range(0, T + 1))) for k, v in dq_prev.items()})
+        dq = projector({k: list((v[t] + omega * abs(gradient[k][t]) for t in range(0, T + 1))) for k, v in dq_prev.items()})
         counter += 1
         print dq
 
