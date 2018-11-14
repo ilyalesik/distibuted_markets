@@ -36,7 +36,7 @@ def calc_conditions(model, T, dQ, eps):
     w_gradient_by_t = list((calc_W_gradient(model, t, dQ, eps) for t in range(0, T + 1)))
     return {
         k: list(
-            (reduce(lambda x, tau: x + w_gradient_by_t[tau][k], range(t, T), 0) - (v.a * dQ[k][t] ** 2 + v.b * dQ[k][t]) if (model.indicators[k][t] > 0) else 0
+            (reduce(lambda x, tau: x + w_gradient_by_t[tau][k], range(t, T), 0) - (v.b) if (model.indicators[k][t] > 0) else 0
              for t in range(0, T + 1))) for k, v in model.edges.items()
     }
 

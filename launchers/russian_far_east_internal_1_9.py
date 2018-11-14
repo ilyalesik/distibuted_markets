@@ -1,6 +1,6 @@
 from components.inside_procedure import start_internal_procedure, calc_p
 from components.planning_external_procedure import start_external_procedure, get_q_slice
-from launchers.russian_far_east_model_2node import far_east_model
+from launchers.russian_far_east_model_1_9 import far_east_model
 
 T = 4
 eps = 0.0001
