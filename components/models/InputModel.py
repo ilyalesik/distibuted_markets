@@ -7,6 +7,9 @@ class InputModel:
     indicators = {}
 
     def __init__(self):
+        self.nodes = {}
+        self.edges = {}
+        self.indicators = {}
         pass
 
     def add_node(self, number, node):
