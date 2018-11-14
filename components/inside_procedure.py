@@ -31,7 +31,7 @@ def get_p(i, q_model, node):
     return 0 if p < 0 else p
 
 def get_gradient_w(model, q_model):
-    return {k: get_p(k[1], q_model, model.nodes[k[1]]) - get_p(k[0], q_model, model.nodes[k[0]]) for k, v in model.edges.items()}
+    return {k: get_p(k[1], q_model, model.nodes[k[1]]) - get_p(k[0], q_model, model.nodes[k[0]]) - v.e_tr for k, v in model.edges.items()}
 
 def get_S(model, q_model):
     min_G = find_min_g(model, q_model)
