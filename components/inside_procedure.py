@@ -35,9 +35,9 @@ def find_min_g(model, q_model):
 def get_p(i, q_model, node):
     p = 0.0
     q = q_model.get_sum(i)
-    if (node.D == 0.0 and node.G == 0.0) or (node.A != 0.0 and node.B != 0.0 and q >= 0.5 * (node.D / node.G - node.B) / node.A):
+    if (node.D == 0.0 and node.G == 0.0):
         p = 2 * node.A * q + node.B
-    elif (node.A == 0.0 and node.B == 0.0) or (q < node.G * node.B - node.D):
+    elif (node.A == 0.0 and node.B == 0.0):
         p = (q + node.D) / node.G
     else:
         p = (q + 0.5 * node.B / node.A + node.D) / (0.5 / node.A + node.G)
