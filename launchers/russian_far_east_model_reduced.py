@@ -75,7 +75,7 @@ edge8_9 = EdgeModel().set_b(q2p * 3200).set_c(1760000).set_e_tr(14.24)
 edge11_10 = EdgeModel().set_b(q2p * 1551).set_c(853050).set_e_tr(6.90195)
 edge8_11 = EdgeModel().set_b(q2p * 3212).set_c(1766600).set_e_tr(14.2934)
 
-indicators = IndicatorModel((1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0))
+indicators = IndicatorModel((0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0))
 
 far_east_model = InputModel()
 far_east_model\

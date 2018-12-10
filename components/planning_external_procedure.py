@@ -55,8 +55,8 @@ def calc_conditions(model, T, dQ, i, eps):
     }
 
 
-def start_external_procedure(model, T, eps, c, i = 0.1, projector=lambda x: x):
-    dq = {k: list((0.0 for t in range(0, T))) for k, v in model.edges.items()}
+def start_external_procedure(model, T, eps, c, i = 0.1, q_initial = None, projector=lambda x: x):
+    dq = {k: list((q_initial[k] if q_initial is not None and t == 0 else 0.0 for t in range(0, T))) for k, v in model.edges.items()}
     counter = 1
     dq_prev = None
     max_tw = None
