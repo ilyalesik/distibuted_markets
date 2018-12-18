@@ -23,3 +23,6 @@ class EdgeModel:
     def set_e_tr(self, e_tr):
         self.e_tr = e_tr
         return self
+
+    def __str__(self):
+        return "{} & {} & {} & {}".format(self.a, self.b, self.c, self.e_tr)
