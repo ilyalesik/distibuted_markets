@@ -30,6 +30,10 @@ class InputModel:
         self.indicators[key] = indicators
         return self
 
+    def set_indicators(self, k, indicators):
+        self.indicators[k] = indicators
+        return self
+
     def get_input_model_with_fix_t(self, t):
         new_model = InputModel()
         new_model.nodes = {k: v.get_model_with_fix_t(t) for k, v in self.nodes.items()}

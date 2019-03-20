@@ -78,4 +78,7 @@ def start_external_procedure(model, T, eps, c, i = 0.1, alpha=0.02, q_initial = 
 
     print 'counter: ', counter
     print 'conditions: ', calc_conditions(model, T, dq, i, alpha, eps)
-    return dq
+    return {
+        'dq': dq,
+        'tw': tw
+    }
