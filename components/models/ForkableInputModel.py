@@ -8,9 +8,9 @@ class ForkableInputModel(InputModel):
         InputModel.__init__(self)
 
     def cloneWithNewIndicators(self, k, indicators):
-        newModel = InputModel()
+        newModel = ForkableInputModel()
         newModel.nodes = self.nodes
-        newModel.edges = self.nodes,
+        newModel.edges = self.edges
         newModel.indicators = self.indicators.copy()
         newModel.indicators[k] = indicators
         return newModel
