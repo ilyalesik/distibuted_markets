@@ -1,19 +1,13 @@
 import random
 from common import check_eps, isclose
 from components.common import get_current_omega
+from components.models.calc_dt import calc_dt
 from inside_procedure import start_internal_procedure, calc_p
 
 def get_q_slice(model, t, dQ):
     return {
         k: reduce(lambda x, tau: x + dQ[k][tau], range(0, t), 0) for k, v in model.edges.items()
     }
-
-
-def calc_dt(i, t, T):
-    if t == T - 1:
-        return 1 / (i * (1 + i) ** t)
-    return (1 / (1 + i)) ** t
-
 
 def calc_W_gradient(model, t, dQ, alpha, eps):
     model_fix_t = model.get_input_model_with_fix_t(t)

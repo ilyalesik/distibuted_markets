@@ -1,14 +1,15 @@
 from components.models.IndicatorModel import IndicatorModel
+from components.models.calc_dt import calc_dt
 from components.planning_external_procedure import start_external_procedure
 
 
-def upper_bound(model, resultForAllInd1, T):
+def upper_bound(model, resultForAllInd1, T, i):
     result = resultForAllInd1['tw']
     for k, v in model.edges.items():
         for t in range(0, T):
             ind = model.indicators[k][t]
             if ind == 0:
-                result -= v.c
+                result += calc_dt(i, t, T) * v.c
     return result
 
 
@@ -19,7 +20,7 @@ def fork(model, resultForAllInd1, T, eps, c, i, alpha, q_initial, projector):
     max_upper_bound_item = None
 
     for fork_item in forks:
-        fork_item_upper_bound = upper_bound(fork_item, resultForAllInd1, T)
+        fork_item_upper_bound = upper_bound(fork_item, resultForAllInd1, T, i)
         if max_upper_bound_value < fork_item_upper_bound:
             max_upper_bound_value = fork_item_upper_bound
             max_upper_bound_item = fork_item
