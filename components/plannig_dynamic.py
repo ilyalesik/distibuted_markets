@@ -3,6 +3,26 @@ from components.models.calc_dt import calc_dt
 from components.planning_external_procedure import start_external_procedure
 
 
+class NodeSetItem:
+
+    def __init__(self):
+        self.is_terminal = False
+        self.upper_bound = 0
+        self.model = None
+
+    def set_is_terminal(self, is_terminal):
+        self.is_terminal = is_terminal
+        return self
+
+    def set_upper_boundl(self, _upper_bound):
+        self.upper_bound = _upper_bound
+        return self
+
+    def set_model(self, model):
+        self.model = model
+        return self
+
+
 def upper_bound(model, resultForAllInd1, T, i):
     result = resultForAllInd1['tw']
     for k, v in model.edges.items():
@@ -13,23 +33,12 @@ def upper_bound(model, resultForAllInd1, T, i):
     return result
 
 
-def fork(model, resultForAllInd1, T, eps, c, i, alpha, q_initial, projector):
-    terminal_value = start_external_procedure(model, T, eps, c, i, alpha, q_initial, projector)
-    forks = model.fork(T)
-    max_upper_bound_value = 0
-    max_upper_bound_item = None
+def _process(current_node_set):
+    pass
 
-    for fork_item in forks:
-        fork_item_upper_bound = upper_bound(fork_item, resultForAllInd1, T, i)
-        if max_upper_bound_value < fork_item_upper_bound:
-            max_upper_bound_value = fork_item_upper_bound
-            max_upper_bound_item = fork_item
 
-    if ((terminal_value['tw'] - max_upper_bound_value) / max_upper_bound_value) < eps:
-        print "stop!"
-        return max_upper_bound_value, max_upper_bound_item
-    else:
-        fork(max_upper_bound_item, resultForAllInd1, T, eps, c, i, alpha, q_initial, projector)
+def _next(current_node_set):
+    _process(current_node_set)
 
 
 def start_dynamic(model, T, eps, c, i, alpha=0.02, q_initial = None, projector=lambda x: x):
@@ -45,7 +54,13 @@ def start_dynamic(model, T, eps, c, i, alpha=0.02, q_initial = None, projector=l
     for k, v in model.edges.items():
         model.set_indicators(k, indicators0)
 
-    return fork(model, resultForAllInd1, T, eps, c, i, alpha, q_initial, projector)
+    indicators0_value = start_external_procedure(model, T, eps, c, i, alpha, q_initial, projector)
 
-    #q = start_external_procedure(model, T, eps, c, i, alpha, q_initial, projector)
-    #print q
+    root_node_set_item = NodeSetItem().set_is_terminal(True).set_upper_boundl(indicators0_value["tw"]).set_model(model)
+
+    current_node_set = [root_node_set_item]
+
+    while True:
+        result = _next(current_node_set)
+        if not (result is None):
+            return result
