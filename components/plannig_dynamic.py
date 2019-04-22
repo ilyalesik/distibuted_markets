@@ -14,7 +14,7 @@ class NodeSetItem:
         self.is_terminal = is_terminal
         return self
 
-    def set_upper_boundl(self, _upper_bound):
+    def set_upper_bound(self, _upper_bound):
         self.upper_bound = _upper_bound
         return self
 
@@ -33,12 +33,34 @@ def upper_bound(model, resultForAllInd1, T, i):
     return result
 
 
-def _process(current_node_set):
-    pass
+def _process(current_node_set, T, eps, c, i, alpha, q_initial, projector):
+    max_node = None
+    for set_item in current_node_set:
+        if not set_item.is_terminal and  (max_node is None or max_node.upper_bound < set_item.upper_bound):
+            max_node = set_item
+
+    new_nodes = max_node.model.fork(T)
+    terminal_value = start_external_procedure(max_node.model, T, eps, c, i, alpha, q_initial, projector)
+    node_set_without_max = filter(lambda set_item: set_item == max_node, current_node_set)
+    # todo: continue here
 
 
-def _next(current_node_set):
-    _process(current_node_set)
+def _next(current_node_set, T, eps, c, i, alpha, q_initial, projector):
+    new_node_set = _process(current_node_set, T, eps, c, i, alpha, q_initial, projector)
+    max_node = None
+    for set_item in new_node_set:
+        if max_node is None or max_node.upper_bound < set_item.upper_bound:
+            max_node = set_item
+
+    if max_node is None:
+        return None
+
+    terminals = filter(lambda set_item: set_item.is_terminal, current_node_set)
+    for node in terminals:
+        if max_node.upper_bound <= node.upper_bound:
+            return max_node
+    return None
+
 
 
 def start_dynamic(model, T, eps, c, i, alpha=0.02, q_initial = None, projector=lambda x: x):
@@ -56,11 +78,11 @@ def start_dynamic(model, T, eps, c, i, alpha=0.02, q_initial = None, projector=l
 
     indicators0_value = start_external_procedure(model, T, eps, c, i, alpha, q_initial, projector)
 
-    root_node_set_item = NodeSetItem().set_is_terminal(True).set_upper_boundl(indicators0_value["tw"]).set_model(model)
+    root_node_set_item = NodeSetItem().set_is_terminal(True).set_upper_bound(indicators0_value["tw"]).set_model(model)
 
     current_node_set = [root_node_set_item]
 
     while True:
-        result = _next(current_node_set)
+        result = _next(current_node_set, T, eps, c, i, alpha, q_initial, projector)
         if not (result is None):
             return result
