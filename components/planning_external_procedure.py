@@ -63,15 +63,15 @@ def start_external_procedure(model, T, eps, c, i = 0.1, alpha=0.02, q_initial = 
         dq = projector({k: list((v[t] + omega * abs(gradient['gradient'][k][t]) for t in range(0, T))) for k, v in dq_prev.items()})
         counter += 1
         tw = gradient['tw']
-        print 'tw', tw
+        #print 'tw', tw
         if (max_tw is not None) and ((tw < max_tw) or (abs(tw - max_tw) < eps)):
             break
         if max_tw is None or tw > max_tw:
             max_tw = tw
-        print dq
+        #print dq
 
-    print 'counter: ', counter
-    print 'conditions: ', calc_conditions(model, T, dq, i, alpha, eps)
+    #print 'counter: ', counter
+    #print 'conditions: ', calc_conditions(model, T, dq, i, alpha, eps)
     return {
         'dq': dq,
         'tw': tw

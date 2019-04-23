@@ -39,8 +39,9 @@ def _process(current_node_set,result_for_all_ind_1, T, eps, c, i, alpha, q_initi
         if not set_item.is_terminal and  (max_node is None or max_node.upper_bound < set_item.upper_bound):
             max_node = set_item
 
+    print "fork node %s" % reduce(lambda prev, key: prev + key.__str__() + ":" + max_node.model.indicators[key].__str__() + "; ", max_node.model.indicators, "")
     new_models = max_node.model.fork(T)
-    node_set_without_max = filter(lambda set_item: set_item == max_node, current_node_set)
+    node_set_without_max = filter(lambda set_item: set_item != max_node, current_node_set)
     new_node_set = [NodeSetItem()
                         .set_is_terminal(False)
                         .set_upper_bound(upper_bound(new_model, result_for_all_ind_1, T, i))
@@ -74,21 +75,25 @@ def start_dynamic(model, T, eps, c, i, alpha=0.02, q_initial = None, projector=l
     for k, v in model.edges.items():
         model.set_indicators(k, indicators1)\
 
-    resultForAllInd1 = start_external_procedure(model, T, eps, c, i, alpha, q_initial, projector)
+    result_for_all_ind_1 = start_external_procedure(model, T, eps, c, i, alpha, q_initial, projector)
     print "result for all ind=1:"
-    print resultForAllInd1
+    print result_for_all_ind_1
 
     indicators0 = IndicatorModel([0 for t in range(0, T + 2)])
     for k, v in model.edges.items():
         model.set_indicators(k, indicators0)
 
-    indicators0_value = start_external_procedure(model, T, eps, c, i, alpha, q_initial, projector)
-
-    root_node_set_item = NodeSetItem().set_is_terminal(True).set_upper_bound(indicators0_value["tw"]).set_model(model)
+    root_node_set_item = NodeSetItem().set_is_terminal(False).set_model(model)
 
     current_node_set = [root_node_set_item]
 
     while True:
-        result = _next(current_node_set, resultForAllInd1, T, eps, c, i, alpha, q_initial, projector)
-        if not (result is None):
-            return result
+        current_node_set = _process(current_node_set, result_for_all_ind_1, T, eps, c, i, alpha, q_initial, projector)
+        max_node = None
+        for set_item in current_node_set:
+            if max_node is None or max_node.upper_bound < set_item.upper_bound:
+                max_node = set_item
+        terminals = filter(lambda set_item: set_item.is_terminal, current_node_set)
+        for node in terminals:
+            if max_node.upper_bound <= node.upper_bound:
+                return max_node
