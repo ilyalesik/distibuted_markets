@@ -23,8 +23,8 @@ class NodeSetItem:
         return self
 
 
-def upper_bound(model, resultForAllInd1, T, i):
-    result = resultForAllInd1['tw']
+def upper_bound(model, result_for_all_ind_1, T, i):
+    result = result_for_all_ind_1['tw']
     for k, v in model.edges.items():
         for t in range(0, T):
             ind = model.indicators[k][t]
@@ -33,20 +33,26 @@ def upper_bound(model, resultForAllInd1, T, i):
     return result
 
 
-def _process(current_node_set, T, eps, c, i, alpha, q_initial, projector):
+def _process(current_node_set,result_for_all_ind_1, T, eps, c, i, alpha, q_initial, projector):
     max_node = None
     for set_item in current_node_set:
         if not set_item.is_terminal and  (max_node is None or max_node.upper_bound < set_item.upper_bound):
             max_node = set_item
 
-    new_nodes = max_node.model.fork(T)
-    terminal_value = start_external_procedure(max_node.model, T, eps, c, i, alpha, q_initial, projector)
+    new_models = max_node.model.fork(T)
     node_set_without_max = filter(lambda set_item: set_item == max_node, current_node_set)
-    # todo: continue here
+    new_node_set = [NodeSetItem()
+                        .set_is_terminal(False)
+                        .set_upper_bound(upper_bound(new_model, result_for_all_ind_1, T, i))
+                        .set_model(new_model) for new_model in new_models]
+    terminal_value = start_external_procedure(max_node.model, T, eps, c, i, alpha, q_initial, projector)
+    terminal_node_set_item = NodeSetItem().set_is_terminal(True).set_upper_bound(terminal_value["tw"]).set_model(max_node.model)
+    return node_set_without_max + new_node_set + [terminal_node_set_item]
 
 
-def _next(current_node_set, T, eps, c, i, alpha, q_initial, projector):
-    new_node_set = _process(current_node_set, T, eps, c, i, alpha, q_initial, projector)
+
+def _next(current_node_set, result_for_all_ind_1, T, eps, c, i, alpha, q_initial, projector):
+    new_node_set = _process(current_node_set, result_for_all_ind_1, T, eps, c, i, alpha, q_initial, projector)
     max_node = None
     for set_item in new_node_set:
         if max_node is None or max_node.upper_bound < set_item.upper_bound:
@@ -83,6 +89,6 @@ def start_dynamic(model, T, eps, c, i, alpha=0.02, q_initial = None, projector=l
     current_node_set = [root_node_set_item]
 
     while True:
-        result = _next(current_node_set, T, eps, c, i, alpha, q_initial, projector)
+        result = _next(current_node_set, resultForAllInd1, T, eps, c, i, alpha, q_initial, projector)
         if not (result is None):
             return result
