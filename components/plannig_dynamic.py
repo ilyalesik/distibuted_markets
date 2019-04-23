@@ -22,6 +22,9 @@ class NodeSetItem:
         self.model = model
         return self
 
+    def __str__(self):
+        return "upper_bound: " + str(self.upper_bound) + ", indicators: " + reduce(lambda prev, key: prev + key.__str__() + ":" + self.model.indicators[key].__str__() + "; ", self.model.indicators, "")
+
 
 def upper_bound(model, result_for_all_ind_1, T, i):
     result = result_for_all_ind_1['tw']
@@ -39,7 +42,7 @@ def _process(current_node_set,result_for_all_ind_1, T, eps, c, i, alpha, q_initi
         if not set_item.is_terminal and  (max_node is None or max_node.upper_bound < set_item.upper_bound):
             max_node = set_item
 
-    print "fork node %s" % reduce(lambda prev, key: prev + key.__str__() + ":" + max_node.model.indicators[key].__str__() + "; ", max_node.model.indicators, "")
+    print max_node
     new_models = max_node.model.fork(T)
     node_set_without_max = filter(lambda set_item: set_item != max_node, current_node_set)
     new_node_set = [NodeSetItem()
