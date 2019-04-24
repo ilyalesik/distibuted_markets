@@ -50,6 +50,7 @@ def _process(current_node_set,result_for_all_ind_1, T, eps, c, i, alpha, q_initi
                         .set_upper_bound(upper_bound(new_model, result_for_all_ind_1, T, i))
                         .set_model(new_model) for new_model in new_models]
     terminal_value = start_external_procedure(max_node.model, T, eps, c, i, alpha, q_initial, projector)
+    print "terminal value: ", terminal_value["tw"]
     terminal_node_set_item = NodeSetItem().set_is_terminal(True).set_upper_bound(terminal_value["tw"]).set_model(max_node.model)
     return node_set_without_max + new_node_set + [terminal_node_set_item]
 
@@ -78,6 +79,6 @@ def start_dynamic(model, T, eps, c, i, alpha=0.02, q_initial = None, projector=l
             if max_node is None or max_node.upper_bound < set_item.upper_bound:
                 max_node = set_item
         terminals = filter(lambda set_item: set_item.is_terminal, current_node_set)
-        for node in terminals:
-            if max_node.upper_bound <= node.upper_bound:
+        for terminal_node in terminals:
+            if (max_node.upper_bound - terminal_node.upper_bound) / terminal_node.upper_bound <= 0:
                 return max_node
