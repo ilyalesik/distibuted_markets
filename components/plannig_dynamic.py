@@ -54,25 +54,6 @@ def _process(current_node_set,result_for_all_ind_1, T, eps, c, i, alpha, q_initi
     return node_set_without_max + new_node_set + [terminal_node_set_item]
 
 
-
-def _next(current_node_set, result_for_all_ind_1, T, eps, c, i, alpha, q_initial, projector):
-    new_node_set = _process(current_node_set, result_for_all_ind_1, T, eps, c, i, alpha, q_initial, projector)
-    max_node = None
-    for set_item in new_node_set:
-        if max_node is None or max_node.upper_bound < set_item.upper_bound:
-            max_node = set_item
-
-    if max_node is None:
-        return None
-
-    terminals = filter(lambda set_item: set_item.is_terminal, current_node_set)
-    for node in terminals:
-        if max_node.upper_bound <= node.upper_bound:
-            return max_node
-    return None
-
-
-
 def start_dynamic(model, T, eps, c, i, alpha=0.02, q_initial = None, projector=lambda x: x):
     indicators1 = IndicatorModel([1 for t in range(0, T + 2)])
     for k, v in model.edges.items():
